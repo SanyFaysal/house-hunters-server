@@ -1,3 +1,4 @@
+const { generateToken } = require('../../utils/token');
 const { findUserByEmailService, registerService } = require('./user.service');
 
 exports.register = async (req, res) => {
@@ -61,7 +62,6 @@ exports.login = async (req, res) => {
     res.status(200).json({
       status: 'Success',
       message: 'Successfully logged in',
-      data: user,
       token,
     });
   } catch (error) {

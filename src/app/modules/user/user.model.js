@@ -33,7 +33,7 @@ const userSchema = mongoose.Schema(
       },
     },
     password: {
-      type: string,
+      type: String,
       required: true,
     },
   },
@@ -42,7 +42,13 @@ const userSchema = mongoose.Schema(
     timeStamps: { createdAt: true, updatedAt: false },
   }
 );
+userSchema.pre('save', function (next) {
+  const password = this.password;
+  const hash = bcrypt.hashSync(password);
+  this.password = hash;
 
+  next();
+});
 userSchema.methods.comparePassword = function (password, hash) {
   const isValidPassword = bcrypt.compareSync(password, hash);
   return isValidPassword;
