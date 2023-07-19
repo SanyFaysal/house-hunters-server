@@ -8,8 +8,8 @@ router.post('/addHouse', houseController.addHouse);
 router.get('/', houseController.getHouse);
 router
   .route('/:id')
-  .get(houseController.getHouse)
-  .patch(houseController.getHouse)
-  .delete(houseController.addHouse);
+  .get(houseController.getSingleHouse)
+  .patch(houseController.updateHouse)
+  .delete(houseController.deleteHouse);
 
 module.exports = router;

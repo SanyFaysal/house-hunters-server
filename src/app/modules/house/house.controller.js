@@ -2,6 +2,8 @@ const {
   addHouseService,
   getHouseService,
   getSingleHouseService,
+  updateHouseService,
+  deleteHouseService,
 } = require('./house.service');
 
 exports.addHouse = async (req, res) => {
@@ -41,7 +43,40 @@ exports.getSingleHouse = async (req, res) => {
     const result = await getSingleHouseService(id);
     res.status(200).json({
       status: 'Success',
-      message: 'Successfully retrieve houses',
+      message: 'Successfully retrieve house',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+exports.updateHouse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.data;
+    const result = await updateHouseService(id, data);
+    res.status(200).json({
+      status: 'Success',
+      message: 'Successfully update houses',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+exports.deleteHouse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteHouseService(id);
+    res.status(200).json({
+      status: 'Success',
+      message: 'Successfully deleted houses',
       data: result,
     });
   } catch (error) {

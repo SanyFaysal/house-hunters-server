@@ -18,3 +18,11 @@ exports.getSingleHouseService = async (id) => {
   });
   return result;
 };
+exports.updateHouseService = async (id, data) => {
+  const result = await House.updateOne({ _id: id }, data, { new: true });
+  return result;
+};
+exports.deleteHouseService = async (id, data) => {
+  const result = await House.deleteOne({ _id: id });
+  return result;
+};
