@@ -33,10 +33,14 @@ const houseSchema = mongoose.Schema(
       type: String,
     },
     availabilityDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     phoneNumber: {
+      type: String,
+      required: true,
+    },
+    rentPerMonth: {
       type: String,
       required: true,
     },
