@@ -1,15 +1,13 @@
 const {
-  addHouseService,
-  getHouseService,
-  getSingleHouseService,
-  updateHouseService,
-  deleteHouseService,
-} = require('./house.service');
+  deleteSingleBookingService,
+  addBookingService,
+  getBookingsService,
+} = require('./booking.service');
 
 exports.addBooking = async (req, res) => {
   try {
     const data = req.body;
-    const result = await addHouseService(data);
+    const result = await addBookingService(data);
     res.status(200).json({
       status: 'Success',
       message: 'Successfully added house',
@@ -24,7 +22,7 @@ exports.addBooking = async (req, res) => {
 };
 exports.getBookings = async (req, res) => {
   try {
-    const result = await getHouseService();
+    const result = await getBookingsService();
     res.status(200).json({
       status: 'Success',
       message: 'Successfully retrieve houses',
@@ -41,7 +39,7 @@ exports.getBookings = async (req, res) => {
 exports.deleteSingleBooking = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await deleteHouseService(id);
+    const result = await deleteSingleBookingService(id);
     res.status(200).json({
       status: 'Success',
       message: 'Successfully deleted houses',
@@ -57,7 +55,7 @@ exports.deleteSingleBooking = async (req, res) => {
 exports.deleteAllBookings = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await deleteHouseService(id);
+    const result = await this.deleteAllBookings(id);
     res.status(200).json({
       status: 'Success',
       message: 'Successfully deleted houses',

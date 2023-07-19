@@ -1,6 +1,6 @@
 const Booking = require('./booking.model');
 
-exports.addHouseService = async (data) => {
+exports.addBookingService = async (data) => {
   const result = await Booking.create(data);
   return result;
 };
@@ -14,7 +14,7 @@ exports.deleteSingleBookingService = async (id) => {
   const result = await House.deleteOne({ _id: id });
   return result;
 };
-exports.deleteHouseService = async () => {
+exports.deleteAllHouseService = async () => {
   const result = await House.deleteMany({});
   return result;
 };
