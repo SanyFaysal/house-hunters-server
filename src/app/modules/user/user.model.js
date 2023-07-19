@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
+      required: true,
       enum: {
         values: ['houseOwner', 'houseRenter'],
         message: "{VALUE} can't be a role !!! ",

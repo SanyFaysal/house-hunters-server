@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const userRouter = require('./app/modules/user/user.route');
+const userRoutes = require('./app/modules/user/user.route');
+const houseRoutes = require('./app/modules/house/house.route');
 
 app.use(express.json());
 app.use(cors());
@@ -13,5 +14,6 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/v1/user', userRouter);
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/house', houseRoutes);
 module.exports = app;
