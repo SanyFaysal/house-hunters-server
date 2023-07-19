@@ -11,10 +11,10 @@ exports.getBookingsService = async (data) => {
   return result;
 };
 exports.deleteSingleBookingService = async (id) => {
-  const result = await House.deleteOne({ _id: id });
+  const result = await Booking.deleteOne({ _id: id });
   return result;
 };
 exports.deleteAllHouseService = async () => {
-  const result = await House.deleteMany({});
+  const result = await Booking.deleteMany({});
   return result;
 };

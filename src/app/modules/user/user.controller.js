@@ -19,6 +19,7 @@ exports.register = async (req, res) => {
       status: 'Success',
       message: 'Signup successful',
       token,
+      data: result,
     });
   } catch (error) {
     res.status(400).json({
@@ -63,6 +64,31 @@ exports.login = async (req, res) => {
       status: 'Success',
       message: 'Successfully logged in',
       token,
+      data: user,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+
+exports.getMe = async (req, res) => {
+  try {
+    const { email } = req.user;
+    const result = await findUserByEmailService(email);
+    if (!result) {
+      return res.status(400).json({
+        status: 'failed',
+        error: 'Token is not verified',
+      });
+    }
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'successfully get data',
+      data: result,
     });
   } catch (error) {
     res.status(400).json({

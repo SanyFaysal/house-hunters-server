@@ -12,13 +12,12 @@ const bookingSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
+
       validate: [validator.isEmail, 'Please provide a valid phone number'],
     },
     phoneNumber: {
       type: String,
       required: true,
-      unique: true,
       minLength: 11,
       validate: [
         validator.isMobilePhone,
@@ -28,6 +27,7 @@ const bookingSchema = mongoose.Schema(
     house: {
       type: mongoose.Types.ObjectId,
       ref: 'House',
+      required: true,
     },
   },
 

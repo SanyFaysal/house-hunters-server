@@ -1,3 +1,4 @@
+const Booking = require('./booking.model');
 const {
   deleteSingleBookingService,
   addBookingService,
@@ -7,6 +8,15 @@ const {
 exports.addBooking = async (req, res) => {
   try {
     const data = req.body;
+    const { email } = data;
+    const haveSpace = await Booking.find({ email: email });
+    console.log(haveSpace);
+    if (haveSpace.length >= 2) {
+      return res.status(400).json({
+        status: 'false',
+        error: "Ops ! you haven't any space to book ",
+      });
+    }
     const result = await addBookingService(data);
     res.status(200).json({
       status: 'Success',

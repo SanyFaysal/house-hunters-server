@@ -4,11 +4,55 @@ exports.addHouseService = async (data) => {
   const result = await House.create(data);
   return result;
 };
-exports.getHouseService = async (data) => {
+exports.getHouseService = async (sort, filter, pagination) => {
   const result = await House.find({}).populate({
     path: 'owner.ownerInfo',
     select: 'fullName email phoneNumber',
   });
+  return result;
+};
+
+exports.getHouseService = async (filters, pagination) => {
+  const query = {};
+
+  if (filters.city.length) {
+    query.city = { $regex: filters.city };
+  }
+  if (filters.bedrooms) {
+    query.bedrooms = { $in: filters.bedrooms };
+  }
+  if (filters.bathrooms.length) {
+    query.bathrooms = { $in: filters.bathrooms };
+  }
+  if (filters.roomSize.length) {
+    query.roomSize = { $regex: filters.roomSize };
+  }
+  if (filters.availabilityDate.length) {
+    query.availabilityDate = { $in: filters.availabilityDate };
+  }
+  if (filters.rentPerMonth.length) {
+    query.rentPerMonth = {
+      $gte: filters.rentPerMonth[0],
+      $lte: filters.rentPerMonth[1],
+    };
+  }
+  console.log(query);
+  const result = await House.find(query)
+    .skip(pagination.skip)
+    .limit(pagination.limit);
+  const totalFound = await House.find(query).count();
+  const total = await House.countDocuments(query);
+  const pageFound = Math.ceil(totalFound / pagination.limit);
+
+  return { result, pageFound, total };
+};
+
+exports.getMyHouseService = async (email) => {
+  const result = await House.find({ 'owner.email': email }).populate({
+    path: 'owner.ownerInfo',
+    select: 'fullName email phoneNumber',
+  });
+  console.log(result);
   return result;
 };
 exports.getSingleHouseService = async (id) => {

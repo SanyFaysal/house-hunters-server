@@ -4,6 +4,7 @@ const {
   getSingleHouseService,
   updateHouseService,
   deleteHouseService,
+  getMyHouseService,
 } = require('./house.service');
 
 exports.addHouse = async (req, res) => {
@@ -24,7 +25,40 @@ exports.addHouse = async (req, res) => {
 };
 exports.getHouse = async (req, res) => {
   try {
-    const result = await getHouseService();
+    const filter = JSON.parse(req.query.filter);
+    const sort = JSON.parse(req.query.sort);
+
+    let pagination = {};
+    // for pagination
+    const skip = (sort?.pageNumber - 1) * parseInt(sort.perPage);
+    pagination.skip = skip;
+    pagination.limit = sort.perPage;
+
+    const { result, pageFound, total } = await getHouseService(
+      sort,
+      filter,
+      pagination
+    );
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Successfully retrieve houses',
+      data: result,
+      pageFound,
+      total,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+exports.getMyHouses = async (req, res) => {
+  try {
+    const { email } = req.user;
+    console.log(email);
+    const result = await getMyHouseService(email);
     res.status(200).json({
       status: 'Success',
       message: 'Successfully retrieve houses',
