@@ -10,7 +10,7 @@ exports.addBooking = async (req, res) => {
     const data = req.body;
     const { email } = data;
     const haveSpace = await Booking.find({ email: email });
-    console.log(haveSpace);
+
     if (haveSpace.length >= 2) {
       return res.status(400).json({
         status: 'false',

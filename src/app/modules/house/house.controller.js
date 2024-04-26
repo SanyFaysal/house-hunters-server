@@ -5,6 +5,8 @@ const {
   updateHouseService,
   deleteHouseService,
   getMyHouseService,
+  addQuestionService,
+  makeAnswerService,
 } = require('./house.service');
 
 exports.addHouse = async (req, res) => {
@@ -25,6 +27,7 @@ exports.addHouse = async (req, res) => {
 };
 exports.getHouse = async (req, res) => {
   try {
+    console.log('come')
     const filter = JSON.parse(req.query.filter);
     const sort = JSON.parse(req.query.sort);
 
@@ -111,6 +114,46 @@ exports.deleteHouse = async (req, res) => {
     res.status(200).json({
       status: 'Success',
       message: 'Successfully deleted houses',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+
+
+exports.addQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const data = req.body;
+    const result = await addQuestionService(id, data);
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Successfully added question',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+exports.makeAnswer = async (req, res) => {
+  try {
+    const { houseId,questionId } = req.params;
+
+    const data = req.body;
+    const result = await makeAnswerService(houseId, questionId, data);
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Successfully make answer',
       data: result,
     });
   } catch (error) {

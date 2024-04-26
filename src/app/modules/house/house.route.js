@@ -20,9 +20,10 @@ router.get(
   authorization('houseOwner'),
   houseController.getMyHouses
 );
+router.route('/:id/question').patch(houseController.addQuestion)
+router.route('/make-answer/:houseId/:questionId').patch(houseController.makeAnswer)
 router
   .route('/:id')
-
   .get(houseController.getSingleHouse)
   .patch(verifyToken, authorization('houseOwner'), houseController.updateHouse)
   .delete(

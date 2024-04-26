@@ -13,35 +13,35 @@ exports.getHouseService = async (sort, filter, pagination) => {
 };
 
 exports.getHouseService = async (filters, pagination) => {
-  const query = {};
+  // const query = {};
 
-  if (filters.city.length) {
-    query.city = { $regex: filters.city };
-  }
-  if (filters.bedrooms) {
-    query.bedrooms = { $in: filters.bedrooms };
-  }
-  if (filters.bathrooms.length) {
-    query.bathrooms = { $in: filters.bathrooms };
-  }
-  if (filters.roomSize.length) {
-    query.roomSize = { $regex: filters.roomSize };
-  }
-  if (filters.availabilityDate.length) {
-    query.availabilityDate = { $in: filters.availabilityDate };
-  }
-  if (filters.rentPerMonth.length) {
-    query.rentPerMonth = {
-      $gte: filters.rentPerMonth[0],
-      $lte: filters.rentPerMonth[1],
-    };
-  }
-  console.log(query);
-  const result = await House.find(query)
+  // if (filters?.city?.length) {
+  //   query.city = { $regex: filters.city };
+  // }
+  // if (filters?.bedrooms) {
+  //   query.bedrooms = { $in: filters.bedrooms };
+  // }
+  // if (filters?.bathrooms?.length) {
+  //   query.bathrooms = { $in: filters.bathrooms };
+  // }
+  // if (filters?.roomSize?.length) {
+  //   query.roomSize = { $regex: filters.roomSize };
+  // }
+  // if (filters?.availabilityDate?.length) {
+  //   query.availabilityDate = { $in: filters.availabilityDate };
+  // }
+  // if (filters?.rentPerMonth?.length) {
+  //   query.rentPerMonth = {
+  //     $gte: filters.rentPerMonth[0],
+  //     $lte: filters.rentPerMonth[1],
+  //   };
+  // }
+  // console.log(query);
+  const result = await House.find()
     .skip(pagination.skip)
     .limit(pagination.limit);
-  const totalFound = await House.find(query).count();
-  const total = await House.countDocuments(query);
+  const totalFound = await House.find().count();
+  const total = await House.countDocuments();
   const pageFound = Math.ceil(totalFound / pagination.limit);
 
   return { result, pageFound, total };
@@ -52,7 +52,7 @@ exports.getMyHouseService = async (email) => {
     path: 'owner.ownerInfo',
     select: 'fullName email phoneNumber',
   });
-  console.log(result);
+
   return result;
 };
 exports.getSingleHouseService = async (id) => {
@@ -72,5 +72,25 @@ exports.updateHouseService = async (id, data) => {
 };
 exports.deleteHouseService = async (id) => {
   const result = await House.deleteOne({ _id: id });
+  return result;
+};
+
+
+exports.addQuestionService = async (id, data) => {
+  console.log({DAT:data})
+  const result = await House.findOneAndUpdate(
+    { _id: id },
+    { $push: {questions:data} },
+    { new: true }
+  );
+  return result;
+};
+exports.makeAnswerService = async (houseId, questionId, data) => {
+
+  const result = await House.findOneAndUpdate(
+    { _id: houseId, 'questions._id':questionId },
+    { $push: {"questions.$.answers":data} },
+    { new: true }
+  );
   return result;
 };

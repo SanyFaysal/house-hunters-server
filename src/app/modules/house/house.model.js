@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const validator = require("validator");
 const { ObjectId } = mongoose.Schema.Types;
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 const houseSchema = mongoose.Schema(
   {
@@ -55,9 +55,27 @@ const houseSchema = mongoose.Schema(
       },
       ownerInfo: {
         type: mongoose.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
       },
     },
+    questions: [
+      {
+        qus: String,
+        created_at:{
+          type:Date,
+          default:Date.now
+        },
+        answers:[
+          {
+            ans:String,
+            created_At:  {
+              type:Date,
+              default : Date.now
+            }
+          }
+        ]
+      },
+    ],
   },
 
   {
@@ -65,6 +83,6 @@ const houseSchema = mongoose.Schema(
   }
 );
 
-const House = mongoose.model('House', houseSchema);
+const House = mongoose.model("House", houseSchema);
 
 module.exports = House;

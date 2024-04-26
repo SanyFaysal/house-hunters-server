@@ -1,6 +1,7 @@
 const Booking = require('./booking.model');
 
 exports.addBookingService = async (data) => {
+  console.log(data)
   const result = await Booking.create(data);
   return result;
 };
