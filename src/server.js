@@ -3,7 +3,7 @@ const config = require('./config/index');
 const app = require('./app');
 async function main() {
   try {
-    await mongoose.connect(process.env.DATABASE);
+    await mongoose.connect("mongodb+srv://tfoysalahmed:jCPUPULmjG5vvHAE@cluster0.cltnhsn.mongodb.net/");
 
     console.log(`🛢 Database is connected successfully`);
 
