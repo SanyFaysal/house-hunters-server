@@ -58,22 +58,28 @@ const houseSchema = mongoose.Schema(
         ref: "User",
       },
     },
+    wishedBy: [
+      {
+        type: ObjectId,
+        ref:'User',
+      },
+    ],
     questions: [
       {
         qus: String,
-        created_at:{
-          type:Date,
-          default:Date.now
+        created_at: {
+          type: Date,
+          default: Date.now,
         },
-        answers:[
+        answers: [
           {
-            ans:String,
-            created_At:  {
-              type:Date,
-              default : Date.now
-            }
-          }
-        ]
+            ans: String,
+            created_At: {
+              type: Date,
+              default: Date.now,
+            },
+          },
+        ],
       },
     ],
   },

@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const validator = require("validator");
 const { ObjectId } = mongoose.Schema.Types;
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 const userSchema = mongoose.Schema(
   {
@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      validate: [validator.isEmail, 'Please provide a valid phone number'],
+      validate: [validator.isEmail, "Please provide a valid phone number"],
     },
     phoneNumber: {
       type: String,
@@ -22,14 +22,14 @@ const userSchema = mongoose.Schema(
       minLength: 11,
       validate: [
         validator.isMobilePhone,
-        'Please provide a valid phone number',
+        "Please provide a valid phone number",
       ],
     },
     role: {
       type: String,
       required: true,
       enum: {
-        values: ['houseOwner', 'houseRenter'],
+        values: ["houseOwner", "houseRenter"],
         message: "{VALUE} can't be a role !!! ",
       },
     },
@@ -37,13 +37,20 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+
+    wishlist: [
+      {
+          type: ObjectId,
+          ref: "House",
+      },
+    ],
   },
 
   {
     timeStamps: { createdAt: true, updatedAt: false },
   }
 );
-userSchema.pre('save', function (next) {
+userSchema.pre("save", function (next) {
   const password = this.password;
   const hash = bcrypt.hashSync(password);
   this.password = hash;
@@ -54,6 +61,6 @@ userSchema.methods.comparePassword = function (password, hash) {
   const isValidPassword = bcrypt.compareSync(password, hash);
   return isValidPassword;
 };
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

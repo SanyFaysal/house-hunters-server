@@ -1,5 +1,5 @@
 const { generateToken } = require('../../utils/token');
-const { findUserByEmailService, registerService } = require('./user.service');
+const { findUserByEmailService, registerService, addToWishlistService, getWishlistService, removeFromWishlistService } = require('./user.service');
 
 exports.register = async (req, res) => {
   try {
@@ -88,6 +88,83 @@ exports.getMe = async (req, res) => {
     res.status(200).json({
       status: 'Success',
       message: 'successfully get data',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+exports.addToWishlist = async (req, res) => {
+  try {
+    const { email } = req.user;
+  const {houseId}= req.body;
+
+    const isUser = await findUserByEmailService(email);
+    if (!isUser) {
+      return res.status(400).json({
+        status: 'failed',
+        error: 'Token is not verified',
+      });
+    }
+
+    const result = await addToWishlistService(email, houseId, isUser?._id, )
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'successfully added',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+exports.removeFromWishlist = async (req, res) => {
+  try {
+    const { email } = req.user;
+  const {houseId}= req.body;
+
+    const isUser = await findUserByEmailService(email);
+    if (!isUser) {
+      return res.status(400).json({
+        status: 'failed',
+        error: 'Token is not verified',
+      });
+    }
+
+    const result = await removeFromWishlistService(email, houseId, isUser?._id, )
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'successfully removed',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+exports.getWishlist = async (req, res) => {
+  try {
+    const { email } = req.user;
+  
+    const result = await getWishlistService(email);
+    if (!result) {
+      return res.status(400).json({
+        status: 'failed',
+        error: 'Token is not verified',
+      });
+    }
+    res.status(200).json({
+      status: 'Success',
+      message: 'successfully fetched',
       data: result,
     });
   } catch (error) {
